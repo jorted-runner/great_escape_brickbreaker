@@ -32,14 +32,12 @@ brick_manager = BrickManager()
 brick_manager.set_level(level)
 ball.move_speed = brick_manager.levels[level]["starting_speed"]
 
-game_screen.onkeypress(fun=paddle.right, key="Right")  # changed
-game_screen.onkeypress(fun=paddle.left, key="Left")  # changed
-game_screen.onkeyrelease(fun=paddle.stop, key="Right")  # new
+game_screen.onkeypress(fun=paddle.right, key="Right")
+game_screen.onkeypress(fun=paddle.left, key="Left")
+game_screen.onkeyrelease(fun=paddle.stop, key="Right")
 game_screen.onkeyrelease(fun=paddle.stop, key="Left")
 
 game_screen.onkey(fun=start_ball, key="space")
-# game_screen.onkey(fun=paddle.right, key="Right")
-# game_screen.onkey(fun=paddle.left, key="Left")
 game_screen.onkey(fun=start_ball_trace, key="t")
 game_screen.onkey(fun=end_ball_trace, key="u")
 game_screen.listen()
@@ -55,7 +53,8 @@ while game_is_on:
             distance = ((ball.xcor() - brick.xcor())**2 + (ball.ycor() - brick.ycor())**2)**0.5
             if distance < 32:
                 if brick.ycor() - 10 < ball.ycor() < brick.ycor() + 10:
-                    if ball.xcor() <= brick.xcor() + 25 or ball.xcor() >= brick.xcor() - 25:
+                    if ((ball.xcor() >= brick.xcor() - 25 and ball.x_move < 0)
+                        or (ball.xcor() <= brick.xcor() + 25 and ball.y_move > 0)):
                         ball.bounce_x()
                         brick_manager.brick_lives[brick] -= 1
                         if brick_manager.brick_lives[brick] < 1:
